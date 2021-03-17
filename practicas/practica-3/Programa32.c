@@ -16,9 +16,9 @@
 
 // Prototipos de funciones.
 void imprimir_informacion(pid_t, pid_t); // Función que imprime el PID y el del padre de un proceso.
-pid_t crear_hijo();                      // Función que crea un proceso hijo, imprime sus datos y crea N procesos nietos.
-pid_t crear_nieto();                     // Función que crea un proceso nieto, imprime sus datos y crea N procesos subnietos.
-pid_t crear_subnieto();                  // Función que crea un proceso subnieto e imprime sus datos.
+void crear_hijo();                       // Función que crea un proceso hijo, imprime sus datos y crea N procesos nietos.
+void crear_nieto();                      // Función que crea un proceso nieto, imprime sus datos y crea N procesos subnietos.
+void crear_subnieto();                   // Función que crea un proceso subnieto e imprime sus datos.
 
 // Función principal.
 int main(int argc, char const *argv[])
@@ -43,15 +43,12 @@ int main(int argc, char const *argv[])
 /**
  * Crear Hijo
  * Función que crea un proceso hijo a partir del proceso actual.
- * @return Un pid_t con el PID del proceso hijo que fue creado.
+ * @return void
  */
-pid_t crear_hijo()
+void crear_hijo()
 {
-  // Variables locales.
-  pid_t pidHijo;
-
   // Creamos el proceso hijo.
-  if ((pidHijo = fork()) == 0)
+  if (fork() == 0)
   {
     // Mostramos su información.
     if (FORMATO_BONITO)
@@ -73,17 +70,17 @@ pid_t crear_hijo()
     // Salimos del proceso.
     exit(0);
   }
-
-  // Regresamos el PID del proceso hijo.
-  return pidHijo;
 }
 
-pid_t crear_nieto()
+/**
+ * Crear Nieto
+ * Función que crea un proceso nieto a partir de un proceso hijo.
+ * @return void
+ */
+void crear_nieto()
 {
-  pid_t pidNieto;
-
   // Creamos el proceso nieto.
-  if ((pidNieto = fork()) == 0)
+  if (fork() == 0)
   {
     // Mostramos la información del nieto.
     if (FORMATO_BONITO)
@@ -105,17 +102,17 @@ pid_t crear_nieto()
     // Finalizamos la ejecución.
     exit(0);
   }
-
-  // Regresamos el PID del nieto.
-  return pidNieto;
 }
 
-pid_t crear_subnieto()
+/**
+ * Crear Subnieto
+ * Función que crea un proceso subnieto a partir de un proceso nieto.
+ * @return void
+ */
+void crear_subnieto()
 {
-  pid_t pidSubNieto;
-
   // Creamos el proceso nieto.
-  if ((pidSubNieto = fork()) == 0)
+  if (fork() == 0)
   {
     // Mostramos la información del nieto.
     if (FORMATO_BONITO)
@@ -127,10 +124,8 @@ pid_t crear_subnieto()
     // Finalizamos la ejecución.
     exit(0);
   }
-
-  // Regresamos el PID del nieto.
-  return pidSubNieto;
 }
+
 /**
  * Imprimir Información
  * Función para imprimir el PID y el de su padre de un
