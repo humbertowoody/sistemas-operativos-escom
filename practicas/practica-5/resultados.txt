@@ -1,0 +1,2 @@
+El número de ocurrencias de la frase "lorem" en el archivo "busca-ocurrencias.txt" es: 5
+El número de archivos copiados al directorio "destino" es: 13
