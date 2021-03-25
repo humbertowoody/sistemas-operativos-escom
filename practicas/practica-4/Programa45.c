@@ -114,7 +114,7 @@ void tomar_tenedor(int num_filosofo)
   estado[num_filosofo] = HAMBRIENTO;
 
   // Imprimimos un mensaje con la información.
-  printf("El filósofo %i está Hambriento\n");
+  printf("El filósofo %i está Hambriento\n", num_filosofo);
 
   // Comemos si los vecinos del filósofo actual no están comiendo.
   probar(num_filosofo);

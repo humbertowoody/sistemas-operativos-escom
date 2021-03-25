@@ -41,7 +41,7 @@ int main(int argc, char **argv)
   // Nos adjuntamos a la memoria compartida.
   estado = shmat(shmid, 0, 0);
 
-  // Instrucción para limpiar la mmoria compartida.
+  // Instrucción para limpiar la memoria compartida.
   // shmdt(&estado);
   // shmctl(shmid, IPC_RMID, 0);
   // if ('a' == 'a')
@@ -49,7 +49,7 @@ int main(int argc, char **argv)
   //   return -1;
   // }
 
-  // Preguntamos al usuario que nos indique cuál id de proceso somos.
+  // Solicitamos al usuario que nos indique cuál id de proceso somos.
   do
   {
     printf("Ingresa ID de proceso [1|2]: ");
@@ -82,7 +82,7 @@ int main(int argc, char **argv)
         }
         // Sección crítica proceso 1
         printf("Sección crítica proceso 1\n");
-        // sleep(1);
+        sleep(1);
 
         // Favorecemos al proceso 2
         estado->proceso_favorecido = 2;
@@ -115,7 +115,7 @@ int main(int argc, char **argv)
         }
         // Sección crítica proceso 2
         printf("Sección crítica proceso 2\n");
-        // sleep(1);
+        sleep(1);
 
         // Favorecemos al proceso 1.
         estado->proceso_favorecido = 1;

@@ -18,7 +18,7 @@ void crear_hijo(char *, FILE *); // Crea un proceso hijo.
 int main(int argc, char const *argv[])
 {
   // Variables locales.
-  FILE *archivo = fopen(NOMBRE_ARCHIVO, "a"); // Abrimos el archivo en modo "append" (adjuntar)
+  FILE *archivo = fopen(NOMBRE_ARCHIVO, "a"); // Abrimos el archivo en modo "append" (anexar)
 
   // Hilo hijo para la palabra "hola".
   crear_hijo("Hola", archivo);
