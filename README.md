@@ -1,6 +1,6 @@
 # Sistemas Operativos
 
-En este repositorio viven todos mis códigos, tareas y trabajos (personales y en equipo) para la materia de *Sistemas Operativos* en ESCOM (2021). Cabe mecionar que no es la intención de este repositorio almacenar archivos/documentos que no sean afines a algún tipo de código o secuencia de comandos.
+Tareas, trabajos y proyectos para la materia de Sistemas Operativos en ESCOM.
 
 ## Información General
 
