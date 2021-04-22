@@ -281,4 +281,9 @@ void insertar_en_ram(int id_pagina_a_insertar, MarcoPagina **marco_de_pagina_ini
     // Insertamos el nuevo marco de página al final.
     temporal->siguiente = nuevo_marco_de_pagina;
   }
+
+  // Imprimimos el mensaje para la conversión de direcciones de memoria.
+  printf("\n\n");
+  printf("\t - La dirección de memoria para la página con ID: %i\n", id_pagina_a_insertar);
+  printf("\t - Ahora se encuentra en RAM con el ID: %i\n\n", nuevo_marco_de_pagina->id_marco);
 }
