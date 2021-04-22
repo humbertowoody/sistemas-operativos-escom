@@ -13,6 +13,7 @@
  */
 #include <stdio.h>  // Operaciones estándar de E/S.
 #include <stdlib.h> // Funciones de la librería estándar de C.
+#include <time.h>   // Para funciones de tiempo en C.
 
 // Constantes de operación.
 #define NUM_PAGINAS 16
@@ -31,9 +32,9 @@ typedef struct marco_pagina
 } MarcoPagina;
 
 // Prototipos de funciones.
-void mostrar_tabla_de_paginas(MarcoPagina *marco_de_pagina_inicial);
-void mostrar_tabla_de_marcos_de_pagina(MarcoPagina *marco_de_pagina_inicial);
-void insertar_en_ram(int id_pagina_a_insertar, MarcoPagina **marco_de_pagina_inicial);
+void mostrar_tabla_de_paginas(MarcoPagina *);
+void mostrar_tabla_de_marcos_de_pagina(MarcoPagina *);
+void insertar_en_ram(int, MarcoPagina **);
 MarcoPagina *buscar_pagina_en_ram(int, MarcoPagina *);
 
 // Función principal.
@@ -41,8 +42,42 @@ int main(int argc, char *argv[])
 {
   // Variables locales.
   MarcoPagina *marco_de_pagina_inicial = NULL; // El marco de página (RAM) inicia vacío.
-  int opcion_menu,
-      id_pagina_a_insertar;
+  int opcion_menu,                             // Variable para almacenar la opción de menú seleccionada por el usuario.
+      id_pagina_a_insertar,                    // El ID de la página a insertar en en la RAM.
+      temporal;                                // Variable temporal para operaciones.
+  char opcion_asignacion_inicial;              // Variable para la opción de asignación inicial.
+
+  // Aleatorizar la semilla inicial.
+  srand(time(NULL));
+
+  // Imprimir mensaje inicial del programa.
+  printf("\n\n\tSimulador de memoria virtual.\n\n");
+
+  // Preguntamos al usuario si desea realizar una asignación inicial aleatoria en la RAM o si desea hacer la carga manual.
+  printf("¿Desea que se genere aleatoriamente la asignación inicial de la RAM?\n");
+  do
+  {
+    printf("[S/N]> ");
+    scanf("%c", &opcion_asignacion_inicial);
+  } while (opcion_asignacion_inicial != 'S' && opcion_asignacion_inicial != 's' && opcion_asignacion_inicial != 'N' && opcion_asignacion_inicial != 'n'); // Validación de entrada.
+
+  // Verificamos la opción seleccionada por el usuario.
+  if (opcion_asignacion_inicial == 'S' || opcion_asignacion_inicial == 's')
+  {
+    // Insertamos las primeras 10 páginas.
+    for (int i = 0; i < NUM_PAGINAS_MARCO; i++)
+    {
+      // Generamos un ID temporal único para la página a insertar.
+      do
+      {
+        // Generamos un número aleatorio.
+        temporal = rand() % NUM_PAGINAS;
+      } while (buscar_pagina_en_ram(temporal, marco_de_pagina_inicial) != NULL);
+
+      // Insertamos el ID generado.
+      insertar_en_ram(temporal, &marco_de_pagina_inicial);
+    }
+  }
 
   // Ciclo principal de ejecución del programa.
   do
@@ -114,7 +149,7 @@ int main(int argc, char *argv[])
 void mostrar_tabla_de_paginas(MarcoPagina *marco_de_pagina_inicial)
 {
   // Variables locales.
-  MarcoPagina *marco_de_pagina_encontrado = NULL;
+  MarcoPagina *marco_de_pagina_encontrado = NULL; // Variable para almacenar el marco de página encontrado.
 
   // Imprimimos el encabezado.
   printf("Tabla de páginas:\n\n");
@@ -204,6 +239,13 @@ MarcoPagina *buscar_pagina_en_ram(int id_pagina_a_buscar, MarcoPagina *marco_pag
   return NULL;
 }
 
+/**
+ * Insertar en RAM
+ * Esta función realiza la inserción de una página dentro de la RAM.
+ * @param id_pagina_a_insertar El ID de la página a insertar en la RAM.
+ * @param marco_de_pagina_inicial Un doble apuntador al marco de página inicial para realizar la operación.
+ * @return void
+ */
 void insertar_en_ram(int id_pagina_a_insertar, MarcoPagina **marco_de_pagina_inicial)
 {
   // Variables locales.
