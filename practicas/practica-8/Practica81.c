@@ -22,22 +22,22 @@
 #define LECTURA_ARCHIVO_TAM_BLOQUE 2097152 // El tamaño de lectura de cada "bloque" de información del archivo 2MiB.
 #define TAMANIO_INICIAL 2                  // El tamaño inicial del archivo si es un archivo nuevo.
 #define CARACTER_VACIO ' '                 // Cuando la pantalla no debe mostrar nada
-#define CARACTER_DE_CONTROL '$'            // Cuando existe un caracter de control (\0 o \n), para debuggear más fácil qué está sucediendo.
+#define CARACTER_DE_CONTROL ' '            // Cuando existe un caracter de control (\0 o \n), para debuggear más fácil qué está sucediendo.
 
 // Prototipos de funciones.
-int leer_archivo_en_buffer(char *, char **, size_t *);                  // Función para leer un archivo y guardarlo en un búffer.
-int existe_archivo(char *);                                             // Función para determinar si existe un archivo.
-void editor_de_texto(char *, char **, size_t *, int, int);              // Función que encapsula la operación del editor.
-void calcular_pantalla(int **, int, int, int, int, char **, size_t);    // Función que calcula los contenidos de la pantalla en cada interacción del usuario.
-void mostrar_pantalla(int, int, char **, int, int, int **);             // Función que muestra la pantalla calculada
-void mostrar_estadisticas(char *, char **, size_t, int, int, int, int); // Función que muestra estadísticas en la barra de menú.
-void tecla_abajo(int, int **, int *, int *, char **, int *);            // Función para encapsular la lógica de presionar la tecla "Flecha Abajo"
-void tecla_arriba(int, int **, int *, int *, char **, int *);           // Función para encapsular la lógica de presionar la tecla "Flecha Arriba"
-void tecla_izquierda(int *, int *);                                     // Función para encapsular la lógica de presionar la tecla "Flecha Izquierda"
-void tecla_derecha(int *, int *, int, size_t, char **);                 // Función para encapsular la lógica de presionar la tecla "Flecha Derecha"
-void tecla_borrar(int *, int *, char **, size_t *, int *, int **);      // Función para encapsular la lógica de presionar la tecla "Borrar"
-void tecla_esc(char *, char **, size_t);                                // Función para encapsular la lógica de presionar la tecla "ESC" (salir)
-void tecla_cualquiera(char **, size_t *, int, int *, int *, int);       // Función para encapsular la lógica de presionar cualquier otra tecla.
+int leer_archivo_en_buffer(char *, char **, size_t *);                        // Función para leer un archivo y guardarlo en un búffer.
+int existe_archivo(char *);                                                   // Función para determinar si existe un archivo.
+void editor_de_texto(char *, char **, size_t *, int, int);                    // Función que encapsula la operación del editor.
+void calcular_pantalla(int **, int, int, int, int, char **, size_t);          // Función que calcula los contenidos de la pantalla en cada interacción del usuario.
+void mostrar_pantalla(int, int, char **, int, int, int **);                   // Función que muestra la pantalla calculada
+void mostrar_estadisticas(char *, char **, size_t, int, int, int, int);       // Función que muestra estadísticas en la barra de menú.
+void tecla_abajo(int, int **, int *, int *, char **, int *);                  // Función para encapsular la lógica de presionar la tecla "Flecha Abajo"
+void tecla_arriba(int, int **, int *, int *, char **, int *);                 // Función para encapsular la lógica de presionar la tecla "Flecha Arriba"
+void tecla_izquierda(int *, int *);                                           // Función para encapsular la lógica de presionar la tecla "Flecha Izquierda"
+void tecla_derecha(int *, int *, int, size_t, char **);                       // Función para encapsular la lógica de presionar la tecla "Flecha Derecha"
+void tecla_borrar(int *, int *, char **, size_t *, int *, int **);            // Función para encapsular la lógica de presionar la tecla "Borrar"
+void tecla_esc(char *, char **, size_t);                                      // Función para encapsular la lógica de presionar la tecla "ESC" (salir)
+void tecla_cualquiera(char **, size_t *, int, int *, int *, int, int *, int); // Función para encapsular la lógica de presionar cualquier otra tecla.
 
 // Función principal.
 int main(int argc, char *argv[])
@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
     switch (resultado_lectura_archivo)
     {
     case LECTURA_ARCHIVO_OK:
-      printf("¡Archivo leído correctamente!\n");
+      printf("¡Archivo leído correctamente!\n%s\n", buffer);
       break;
     case LECTURA_ARCHIVO_PARAMETROS_INVALIDOS:
       printf("El archivo no existe o está dañado, revísalo e intenta más tarde.\n");
@@ -361,10 +361,13 @@ void editor_de_texto(char *nombre_archivo, char **buffer, size_t *tamanio_buffer
       break;
 
     default:
-      tecla_cualquiera(buffer, tamanio_buffer, tecla_presionada, &pos_buffer, &pos_x, columnas_maximas);
+      tecla_cualquiera(buffer, tamanio_buffer, tecla_presionada, &pos_buffer, &pos_x, columnas_maximas, &pos_y, filas_maximas);
       break;
     }
   } while (tecla_presionada != 27); // Mientras el usuario no presiones ESC.
+
+  // Limpiar memoria.
+  free(pantalla);
 }
 
 /**
@@ -673,38 +676,60 @@ void tecla_borrar(int *pos_x, int *pos_y, char **buffer, size_t *tamanio_buffer,
  * @param pos_buffer La posición actual en el búffer
  * @param pos_x La posición actual en x (columna) de nuestra pantalla
  * @param columnas_maximas El número máximo de columnas en nuestra pantalla
+ * @param pos_y La posición actual en y (fila) de nuestra pantalla
+ * @param filas_maximas El número máximo de filas en nuestra pantalla
  * @return void
  */
-void tecla_cualquiera(char **buffer, size_t *tamanio_buffer, int tecla_presionada, int *pos_buffer, int *pos_x, int columnas_maximas)
+void tecla_cualquiera(char **buffer, size_t *tamanio_buffer, int tecla_presionada, int *pos_buffer, int *pos_x, int columnas_maximas, int *pos_y, int filas_maximas)
 {
   // Variables locales.
   int pos_buffer_temporal; // Para iterar dentro de nuestro búffer de memoria.
+  char *buffer_temporal;   // Para realizar la copia del búffer.
 
-  // Asignamos un nuevo byte en memoria para nuestro búffer.
-  (*buffer) = realloc((*buffer), (*tamanio_buffer) + 1);
+  // Creamos un nuevo búffer con el tamaño aumentado.
+  buffer_temporal = malloc(((*tamanio_buffer) + 1) * sizeof(char));
+
+  for (pos_buffer_temporal = 0; pos_buffer_temporal < (*pos_buffer); pos_buffer_temporal++)
+  {
+    buffer_temporal[pos_buffer_temporal] = (*buffer)[pos_buffer_temporal];
+  }
 
   // Recorremos los elementos dentro de nuestro búffer de memoria en una unidad.
-  for (pos_buffer_temporal = ((int)(*tamanio_buffer) - 1); pos_buffer_temporal > (*pos_buffer); pos_buffer_temporal--)
+  for (pos_buffer_temporal = ((int)(*tamanio_buffer)); pos_buffer_temporal > (*pos_buffer); pos_buffer_temporal--)
   {
-    (*buffer)[pos_buffer_temporal] = (*buffer)[pos_buffer_temporal - 1];
+    buffer_temporal[pos_buffer_temporal] = (*buffer)[pos_buffer_temporal - 1];
   }
 
   // Si la tecla es "Enter", manualmente colocamos el caracter y aumentamos nuestra posición en y.
-  if (tecla_presionada == KEY_ENTER)
+  if (tecla_presionada == '\n')
   {
-    (*buffer)[(*pos_buffer)] = '\n';
+    // Asignamos el salto de línea al búffer.
+    buffer_temporal[pos_buffer_temporal] = '\n';
+
+    // Verificamos si podemos aumentar la coordenada en y.
+    if ((*pos_y) < (filas_maximas - 1))
+    {
+      (*pos_y)++;
+      (*pos_x) = 0;
+    }
   }
   else
   {
     // Si es cualquier otra tecla, hacemos un casting a caracter con su código ASCII.
-    (*buffer)[(*pos_buffer)] = (char)tecla_presionada;
+    buffer_temporal[pos_buffer_temporal] = (char)tecla_presionada;
   }
 
-  // Si es posible, aumentamos la posición en el búffer actualmente.
-  if ((*pos_buffer + 1) < ((int)(*tamanio_buffer)))
-  {
-    (*pos_buffer)++;
-  }
+  // Aumentamos el tamaño del búffer.
+  (*tamanio_buffer) += 1;
+
+  // Borramos el búffer anterior.
+  free((*buffer));
+
+  // Asignamos el nuevo búffer.
+  (*buffer) = buffer_temporal;
+
+  // Aumentamos la posición dentro del búffer.
+  (*pos_buffer) += 1;
 
   // Si es posible, aumentamos la posición en x (columna) en nuestra pantalla actualmente.
   if ((*pos_x + 1) < columnas_maximas)
@@ -736,6 +761,12 @@ void tecla_esc(char *nombre_archivo, char **buffer, size_t tamanio_buffer)
     // En caso de que no se haya podido abrir, abandonamos con exit status = -1.
     exit(-1);
     return;
+  }
+
+  // Verificamos que el búffer esté terminado con un EOF, sino, lo añadimos.
+  if ((*buffer)[tamanio_buffer] != EOF)
+  {
+    (*buffer)[tamanio_buffer] = EOF;
   }
 
   // Guardamos nuestro búffer en el archivo.
