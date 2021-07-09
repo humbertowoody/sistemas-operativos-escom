@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
   if (argc < 2)
   {
     // Mostramos menú.
-    printf("E-Shelf: Seeding inicial.\n\n");
+    printf("E-Shelf: Seeding inicial de la base de datos.\n\n");
     printf("Descripción: Este programa permite generar los datos iniciales para un demo funcional de E-Shelf.\n");
     printf("Funcionamiento:\n");
     printf("\t%s [PARAMETRO_1] [PARAMETRO_2] [...]\n", argv[0]);
@@ -131,7 +131,7 @@ void generar_libros()
       {"8441532109", "Clean code", "Clean Code, o Código Limpio, es una filosofía de desarrollo de software que consiste en aplicar técnicas simples que facilitan la escritura y lectura de un código, volviéndolo más fácil de entender.", "Robert C. Martin", "Grupo Anaya Comercial", "spa", 2012, 700},
       {"9780613832106", "Fisica - Volumen 1", "Libro con las bases fundamentales para ciencias e ingeniería como: mediciones, mov. unidimensional, vectores, mov. bidimensional y tridimensional, entre otros temas importantes", "David Halliday, Robert Resnick", "Patria", "spa", 1993, 405.6},
       {"9788433998972", "Un verdor terrible", " Benjamín Labatut ha escrito un libro inclasiﬁcable y poderosamente seductor, que habla de descubrimientos fruto del azar, teorías que bordean la locura, búsquedas alquímicas del conocimiento y la exploración de los límites de lo desconocido.", "Benjamín Labatut", "Anagrama", "spa", 2020, 360},
-      {"9786073173162", "Becoming. Mi Historia", "Adaptada para jóvenes lectores, esta es la inspiradora biografía de la que fue la primera dama de Estados Unidos, Michelle Obama.", "Michelle Obama", "Plaza & Janes", "spa", 2018, 450.0}};
+      {"9786073173162", "Becoming. Mi Historia", "", "Plaza & Janes", "spa", 2018, 450.0}};
 
   // Los guardamos en el archivo.
   escribir_libros_en_archivo(libros, 5);

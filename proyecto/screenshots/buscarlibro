@@ -1,0 +1,26 @@
+E-Shelf: Buscar Libro
+
+Selecciona la opción para realizar la búsqueda:
+
+1) ISBN
+2) Título
+3) Autor
+
+> 1
+
+Introduce el ISBN: 9780613832106
+
+Buscando...
+¡Se ha encontrado un libro!
+
+ISBN: 9780613832106
+Título: Física - Volumen 1
+Autor: David Halliday, Robert Resnick
+Descripción: Libro con las bases fundamentales para ciencias e ingeniería como: 
+mediciones, mov. unidimensional, vectores, mov. bidimensional y tridimensional, 
+entre otros temas importantes
+
+¿Deseas agregar al carrito?
+S/N> s
+
+¡Física - Volumen 1 agregado correctamente al carrito!

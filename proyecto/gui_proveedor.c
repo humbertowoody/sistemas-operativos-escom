@@ -4,9 +4,8 @@
  * En este archivo se implementan las distintas funcionalidades requeridas para la interfaz
  * gráfica de usuario de proveedores en E-Shelf.
  */
-#include <ncurses.h>
-#include <locale.h>
 #include "gui_proveedor.h"
+#include "gui.h"
 
 /**
  * menu_principal_proveedor
@@ -17,13 +16,19 @@
 void menu_principal_proveedor(proveedor proveedor_autenticado)
 {
   // Variables locales.
-  int max_filas;
+  int max_filas,    // Para almacenar el número de filas en pantalla.
+      max_columnas, // Para almacenar el número de columnas en pantalla.
+      opcion_menu;  // Para almacenar la opción seleccionada por el usuario en el menú.
+
   // Inicialización de nuestro ambiente de texto gráfico.
-  setlocale(LC_ALL, "es_MX"); // Colocamos la localización en español México.
-  initscr();                  // Iniciamos el modo gráfico.
-  cbreak();                   // Queremos capturar _todas_ las teclas que presione el usuario (esto incluye Control + C ¡aguas!)
-  keypad(stdscr, TRUE);       // Activamos el modo "keypad" para poder utilizar flechas del teclado y demás monerías.
-  noecho();                   // No queremos que las teclas que presione el usuario se impriman.
+  if (inicializar_pantalla() == INICIALIZAR_PANTALLA_ERROR)
+  {
+    printf("Ocurrió un error iniciando el ambiente gráfico, intente de nuevo más tarde.\n");
+    return;
+  }
+
+  // Obtenemos las dimensiones de la pantalla.
+  getmaxyx(stdscr, max_filas, max_columnas);
 
   // Finalización del ambiente de texto gráfico.
   clear();

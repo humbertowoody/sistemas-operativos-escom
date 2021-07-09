@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
   scanf("%s", contrasenia);
 
   // Intentamos el inicio de sesión.
-  resultado_operacion = iniciar_sesion_proveedor(correo_electronico, contrasenia, &proveedor_actual);
+  resultado_operacion = 0; // iniciar_sesion_proveedor(correo_electronico, contrasenia, &proveedor_actual);
 
   // Verificamos el resultado de la operación.
   if (resultado_operacion == INICIO_DE_SESION_PROVEEDOR_EXITOSO)

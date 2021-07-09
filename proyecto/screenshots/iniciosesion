@@ -1,0 +1,15 @@
+$ ./e_shelf_cliente
+E-Shelf: Cliente
+
+¡Bienvenido a E-Shelf!
+
+Introduce tu usuario: usuario@invalido.com
+Introduce tu contraseña: hola1234
+
+¡Oh no!
+Este usuario y/o contraseña son inválidos.
+Revísalos e inténtalo de nuevo más tarde.
+
+E-Shelf | Sistemas Operativos ESCOM, 2021
+
+$
